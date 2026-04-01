@@ -458,25 +458,28 @@
     #gallery .h2 { color: var(--white); }
 
     .gallery-grid {
-      display: grid; grid-template-columns: repeat(4,1fr);
-      grid-template-rows: 240px 240px; gap: 12px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-auto-rows: 210px;
+      gap: 10px;
     }
     .g-item { position: relative; overflow: hidden; border-radius: 12px; }
-    .g-item.tall { grid-row: span 2; }
-    .g-item.wide { grid-column: span 2; }
-    .g-item img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s; }
-    .g-item:hover img { transform: scale(1.07); }
+    .g-item.tall  { grid-row: span 2; }
+    .g-item.wide  { grid-column: span 2; }
+    .g-item.big   { grid-row: span 2; grid-column: span 2; }
+    .g-item img { width: 100%; height: 100%; object-fit: cover; transition: transform .55s ease; }
+    .g-item:hover img { transform: scale(1.08); }
 
     .g-over {
       position: absolute; inset: 0;
-      background: linear-gradient(to top, rgba(13,12,10,.75) 0%, transparent 55%);
+      background: linear-gradient(to top, rgba(13,12,10,.78) 0%, transparent 55%);
       opacity: 0; transition: opacity .3s;
-      display: flex; align-items: flex-end; padding: 18px;
+      display: flex; align-items: flex-end; padding: 16px;
     }
     .g-item:hover .g-over { opacity: 1; }
     .g-label {
       font-size: 11.5px; font-weight: 700; letter-spacing: .5px;
-      color: var(--white); background: rgba(196,154,26,0.88);
+      color: var(--white); background: rgba(196,154,26,0.90);
       padding: 5px 14px; border-radius: 4px;
     }
 
@@ -656,10 +659,10 @@
       .why-visual { height: 320px; }
       .services-grid { grid-template-columns: 1fr 1fr; }
       .hl-grid { grid-template-columns: 1fr 1fr; }
-      .gallery-grid { grid-template-columns: repeat(2,1fr); grid-template-rows: auto; }
-      .g-item { height: 200px; }
-      .g-item.tall { grid-row: span 1; height: 200px; }
+      .gallery-grid { grid-template-columns: repeat(2,1fr); grid-auto-rows: 180px; }
+      .g-item.tall { grid-row: span 1; }
       .g-item.wide { grid-column: span 1; }
+      .g-item.big  { grid-row: span 1; grid-column: span 1; }
     }
 
     @media (max-width: 640px) {
@@ -667,7 +670,7 @@
       .nav-links { display: none; }
       .burger { display: flex; }
       .services-grid, .hl-grid, .gallery-grid { grid-template-columns: 1fr; }
-      .g-item,.g-item.tall,.g-item.wide { grid-row: span 1; grid-column: span 1; height: 200px; }
+      .g-item,.g-item.tall,.g-item.wide,.g-item.big { grid-row: span 1; grid-column: span 1; height: 200px; }
       .hero-stats { gap: 0; }
       .frow { grid-template-columns: 1fr; }
       .form-box { padding: 26px 20px; }
@@ -815,14 +818,42 @@
       <h2 class="h2">Events We've <span>Brought to Life</span></h2>
     </div>
     <div class="gallery-grid reveal" style="transition-delay:.1s">
-      <div class="g-item tall"><img src="https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04?w=600&q=80" alt="Stage Setup" loading="lazy" /><div class="g-over"><span class="g-label">Stage Production</span></div></div>
-      <div class="g-item"><img src="https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=600&q=80" alt="Trophies" loading="lazy" /><div class="g-over"><span class="g-label">Trophies &amp; Awards</span></div></div>
-      <div class="g-item"><img src="https://images.unsplash.com/photo-1559523161-0fc0d8b814b4?w=600&q=80" alt="Medals" loading="lazy" /><div class="g-over"><span class="g-label">Medals &amp; Mementos</span></div></div>
-      <div class="g-item tall"><img src="https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=600&q=80" alt="Live Event" loading="lazy" /><div class="g-over"><span class="g-label">Live Events</span></div></div>
-      <div class="g-item wide"><img src="https://images.unsplash.com/photo-1561489413-985b06da5bee?w=900&q=80" alt="Conference" loading="lazy" /><div class="g-over"><span class="g-label">Corporate Conferences</span></div></div>
-      <div class="g-item"><img src="https://images.unsplash.com/photo-1601924994987-69e26d50dc26?w=600&q=80" alt="Brand Activation" loading="lazy" /><div class="g-over"><span class="g-label">Brand Activations</span></div></div>
-      <div class="g-item"><img src="https://images.unsplash.com/photo-1535016120720-40c646be5580?w=600&q=80" alt="Product Launch" loading="lazy" /><div class="g-over"><span class="g-label">Product Launches</span></div></div>
-      <div class="g-item"><img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=600&q=80" alt="Outdoor Event" loading="lazy" /><div class="g-over"><span class="g-label">Outdoor Events</span></div></div>
+
+      <!-- Row 1 -->
+      <div class="g-item tall"><img src="https://i.ibb.co/5W6vLmHL/IMG-20250727-WA0047.jpg" alt="Event" loading="lazy" /><div class="g-over"><span class="g-label">Live Events</span></div></div>
+      <div class="g-item"><img src="https://i.ibb.co/ynmYD1WB/IMG-20250727-WA0045.jpg" alt="Event" loading="lazy" /><div class="g-over"><span class="g-label">Stage Production</span></div></div>
+      <div class="g-item"><img src="https://i.ibb.co/Kc8w37WJ/Whats-App-Image-2025-07-27-at-21-09-22-c6fe0a0f.jpg" alt="Event" loading="lazy" /><div class="g-over"><span class="g-label">Corporate Events</span></div></div>
+      <div class="g-item tall"><img src="https://i.ibb.co/j9fYWM26/IMG-20250727-WA0043.jpg" alt="Event" loading="lazy" /><div class="g-over"><span class="g-label">Award Shows</span></div></div>
+
+      <!-- Row 2 -->
+      <div class="g-item wide"><img src="https://i.ibb.co/fYCVV1d2/Whats-App-Image-2025-07-27-at-21-05-46-1a56d5fe.jpg" alt="Event" loading="lazy" /><div class="g-over"><span class="g-label">Brand Activations</span></div></div>
+      <div class="g-item"><img src="https://i.ibb.co/k2RFMDgJ/IMG-20250722-WA0076.jpg" alt="Event" loading="lazy" /><div class="g-over"><span class="g-label">Event Production</span></div></div>
+
+      <!-- Row 3 -->
+      <div class="g-item"><img src="https://i.ibb.co/PZbs6CSv/IMG-20250722-WA0077.jpg" alt="Event" loading="lazy" /><div class="g-over"><span class="g-label">Stage Setup</span></div></div>
+      <div class="g-item big"><img src="https://i.ibb.co/6RhZnxJ5/IMG-20250722-WA0084.jpg" alt="Event" loading="lazy" /><div class="g-over"><span class="g-label">College Events</span></div></div>
+      <div class="g-item"><img src="https://i.ibb.co/zVnxBN7B/IMG-20250803-WA0006.jpg" alt="Event" loading="lazy" /><div class="g-over"><span class="g-label">Celebrations</span></div></div>
+
+      <!-- Row 4 -->
+      <div class="g-item tall"><img src="https://i.ibb.co/VcczzmSB/IMG-20250803-WA0009.jpg" alt="Event" loading="lazy" /><div class="g-over"><span class="g-label">Award Functions</span></div></div>
+      <div class="g-item"><img src="https://i.ibb.co/TZ0hvDH/IMG-20250803-WA0026.jpg" alt="Event" loading="lazy" /><div class="g-over"><span class="g-label">Product Launches</span></div></div>
+      <div class="g-item wide"><img src="https://i.ibb.co/tTswHXx9/IMG-20250803-WA0035.jpg" alt="Event" loading="lazy" /><div class="g-over"><span class="g-label">Corporate Conferences</span></div></div>
+
+      <!-- Row 5 -->
+      <div class="g-item"><img src="https://i.ibb.co/qMtVJW2z/IMG-20250803-WA0044.jpg" alt="Event" loading="lazy" /><div class="g-over"><span class="g-label">Gala Events</span></div></div>
+      <div class="g-item wide"><img src="https://i.ibb.co/Sw60kmZy/IMG-20250813-WA0031.jpg" alt="Event" loading="lazy" /><div class="g-over"><span class="g-label">Media Coverage</span></div></div>
+      <div class="g-item"><img src="https://i.ibb.co/GvXc12mT/IMG-20250813-WA0017.jpg" alt="Event" loading="lazy" /><div class="g-over"><span class="g-label">Event Highlights</span></div></div>
+
+      <!-- Row 6 -->
+      <div class="g-item big"><img src="https://i.ibb.co/dYdBNC9/Whats-App-Image-2026-02-20-at-5-40-41-PM-1.jpg" alt="Event" loading="lazy" /><div class="g-over"><span class="g-label">Grand Productions</span></div></div>
+      <div class="g-item"><img src="https://i.ibb.co/mrypts3d/Whats-App-Image-2026-03-25-at-3-04-37-PM.jpg" alt="Event" loading="lazy" /><div class="g-over"><span class="g-label">Stage Decor</span></div></div>
+      <div class="g-item tall"><img src="https://i.ibb.co/BHJVYbHQ/Whats-App-Image-2026-03-25-at-3-04-38-PM.jpg" alt="Event" loading="lazy" /><div class="g-over"><span class="g-label">Live Shows</span></div></div>
+
+      <!-- Row 7 -->
+      <div class="g-item"><img src="https://i.ibb.co/qMZLkFCc/IMG-20250729-WA0008.jpg" alt="Event" loading="lazy" /><div class="g-over"><span class="g-label">Outdoor Events</span></div></div>
+      <div class="g-item wide"><img src="https://i.ibb.co/kgj8nhLd/Branding-8.jpg" alt="Event" loading="lazy" /><div class="g-over"><span class="g-label">Branding &amp; Promotions</span></div></div>
+      <div class="g-item"><img src="https://i.ibb.co/mrFhZHmQ/Blue-White-and-Orange-Dynamic-Event-Stage-Production-Presentation.jpg" alt="Event" loading="lazy" /><div class="g-over"><span class="g-label">Event Presentations</span></div></div>
+
     </div>
   </div>
 </section>
@@ -895,7 +926,7 @@
         <div class="contact-info">
           <div class="cinfo-item"><div class="cinfo-icon">📍</div><div><div class="cinfo-label">Address</div><div class="cinfo-val">Creovibe Solutions, Bangalore &ndash; 560049</div></div></div>
           <div class="cinfo-item"><div class="cinfo-icon">📞</div><div><div class="cinfo-label">Phone</div><a href="tel:9606255441" class="cinfo-val">+91 96062 55441</a></div></div>
-          <div class="cinfo-item"><div class="cinfo-icon">✉️</div><div><div class="cinfo-label">Email</div><a href="mailto:creovibe25@gmail.com" class="cinfo-val">creovibe25@gmail.com</a></div></div>
+          <div class="cinfo-item"><div class="cinfo-icon">✉️</div><div><div class="cinfo-label">Email</div><a href="/cdn-cgi/l/email-protection#7a19081f150c13181f484f3a1d171b131654191517" class="cinfo-val"><span class="__cf_email__" data-cfemail="eb88998e849d82898ed9deab8c868a8287c5888486">[email&#160;protected]</span></a></div></div>
           <div class="cinfo-item"><div class="cinfo-icon">🕐</div><div><div class="cinfo-label">Hours</div><div class="cinfo-val">Mon&ndash;Fri: 9 AM &ndash; 5 PM &nbsp;&middot;&nbsp; Sat: 10 AM &ndash; 3 PM</div></div></div>
         </div>
       </div>
@@ -947,7 +978,7 @@
 
 <div id="toast"></div>
 
-<script type="module">
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script type="module">
   import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
   const sb = createClient(
     'https://vazdtyjtarhhypftmmqg.supabase.co',
@@ -1018,9 +1049,4 @@
     btn.disabled=true; btn.textContent='Sending…';
     var {error}=await sb.from('Enquiries').insert([{name,phone,email,event_type:type||'Not specified',message:msg||''}]);
     btn.disabled=false; btn.textContent='Send Enquiry →';
-    if(error){ console.error(error); toast('❌ Something went wrong. Please try again.',true); }
-    else{ ['fn','fp','fe','ft','fm'].forEach(function(id){document.getElementById(id).value='';}); toast('✓ Enquiry sent! We\'ll reach out within 24 hours.',false); }
-  };
-</script>
-</body>
-</html>
+    if(error){ console.error(error); toast('❌ Somet
