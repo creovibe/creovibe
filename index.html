@@ -153,7 +153,7 @@ section{padding:100px 0}
 #gallery .h2{color:var(--white)}
 
 .gallery-grid{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:210px;gap:10px}
-.g-item{position:relative;overflow:hidden;border-radius:10px}
+.g-item{position:relative;overflow:hidden;border-radius:10px;cursor:pointer}
 .g-item.tall{grid-row:span 2}
 .g-item.wide{grid-column:span 2}
 .g-item.big{grid-row:span 2;grid-column:span 2}
@@ -162,6 +162,141 @@ section{padding:100px 0}
 .g-over{position:absolute;inset:0;background:linear-gradient(to top,rgba(13,12,10,.78) 0%,transparent 55%);opacity:0;transition:opacity .3s;display:flex;align-items:flex-end;padding:16px}
 .g-item:hover .g-over{opacity:1}
 .g-label{font-size:11.5px;font-weight:700;letter-spacing:.5px;color:var(--white);background:rgba(196,154,26,.90);padding:5px 14px;border-radius:4px}
+
+/* gallery zoom hint */
+.g-item::after{
+  content:'⤢';
+  position:absolute;top:12px;right:12px;
+  width:32px;height:32px;
+  background:rgba(196,154,26,.85);
+  color:#fff;font-size:16px;
+  border-radius:6px;
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;transform:scale(.7);
+  transition:opacity .25s,transform .25s;
+  pointer-events:none;
+}
+.g-item:hover::after{opacity:1;transform:scale(1);}
+
+/* ═══ LIGHTBOX ═══ */
+#lightbox{
+  position:fixed;inset:0;z-index:8000;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(10,9,8,0);
+  backdrop-filter:blur(0px);-webkit-backdrop-filter:blur(0px);
+  opacity:0;pointer-events:none;
+  transition:opacity .35s ease, background .35s ease;
+}
+#lightbox.active{
+  opacity:1;pointer-events:all;
+  background:rgba(10,9,8,.92);
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+}
+
+/* image wrapper */
+.lb-img-wrap{
+  position:relative;
+  max-width:90vw;max-height:88vh;
+  display:flex;align-items:center;justify-content:center;
+  transform:scale(.88);opacity:0;
+  transition:transform .38s cubic-bezier(.22,1,.36,1), opacity .38s ease;
+}
+#lightbox.active .lb-img-wrap{transform:scale(1);opacity:1;}
+
+.lb-img-wrap img{
+  max-width:90vw;max-height:85vh;
+  width:auto;height:auto;
+  border-radius:10px;
+  box-shadow:0 32px 80px rgba(0,0,0,.7);
+  display:block;
+  object-fit:contain;
+  user-select:none;
+  -webkit-user-drag:none;
+}
+
+/* gold top bar on lightbox image */
+.lb-img-wrap::before{
+  content:'';
+  position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--gold),var(--gold-lt),var(--gold));
+  border-radius:10px 10px 0 0;
+  z-index:2;
+}
+
+/* label */
+.lb-label{
+  position:absolute;bottom:-38px;left:0;right:0;
+  text-align:center;
+  font-size:12px;font-weight:600;letter-spacing:2px;text-transform:uppercase;
+  color:rgba(255,255,255,.45);
+}
+
+/* close btn */
+.lb-close{
+  position:fixed;top:22px;right:28px;
+  width:46px;height:46px;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.15);
+  border-radius:50%;
+  color:#fff;font-size:20px;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;
+  transition:background .2s,transform .2s,border-color .2s;
+  z-index:8010;
+  backdrop-filter:blur(8px);
+}
+.lb-close:hover{background:var(--gold);border-color:var(--gold);transform:rotate(90deg);}
+
+/* nav arrows */
+.lb-arrow{
+  position:fixed;top:50%;transform:translateY(-50%);
+  width:52px;height:52px;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.15);
+  border-radius:50%;
+  color:#fff;font-size:22px;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;
+  transition:background .2s,border-color .2s,transform .2s;
+  z-index:8010;
+  backdrop-filter:blur(8px);
+  user-select:none;
+}
+.lb-arrow:hover{background:var(--gold);border-color:var(--gold);}
+.lb-prev{left:22px;}
+.lb-prev:hover{transform:translateY(-50%) translateX(-2px);}
+.lb-next{right:22px;}
+.lb-next:hover{transform:translateY(-50%) translateX(2px);}
+
+/* counter */
+.lb-counter{
+  position:fixed;bottom:24px;left:50%;transform:translateX(-50%);
+  font-family:'Bebas Neue',Impact,sans-serif;
+  font-size:15px;letter-spacing:3px;
+  color:rgba(255,255,255,.35);
+  z-index:8010;
+}
+.lb-counter span{color:var(--gold);}
+
+/* dot strip */
+.lb-dots{
+  position:fixed;bottom:52px;left:50%;transform:translateX(-50%);
+  display:flex;gap:6px;z-index:8010;
+  max-width:80vw;flex-wrap:wrap;justify-content:center;
+}
+.lb-dot{
+  width:6px;height:6px;border-radius:50%;
+  background:rgba(255,255,255,.2);
+  transition:background .2s,transform .2s;
+  cursor:pointer;
+}
+.lb-dot.active{background:var(--gold);transform:scale(1.4);}
+
+/* swipe hint on mobile */
+@media(max-width:640px){
+  .lb-arrow{display:none;}
+  .lb-img-wrap{max-width:96vw;}
+}
 
 /* ═══ CLIENTS ═══ */
 #clients{background:var(--cream2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
@@ -271,6 +406,19 @@ footer{background:var(--ink);padding:56px 0 28px}
 
 <div class="cur-dot" id="curDot"></div>
 <div class="cur-ring" id="curRing"></div>
+
+<!-- ═══ LIGHTBOX ═══ -->
+<div id="lightbox" role="dialog" aria-modal="true" aria-label="Image viewer">
+  <button class="lb-close" id="lbClose" aria-label="Close">✕</button>
+  <button class="lb-arrow lb-prev" id="lbPrev" aria-label="Previous image">&#8592;</button>
+  <div class="lb-img-wrap" id="lbImgWrap">
+    <img id="lbImg" src="" alt="Gallery image"/>
+    <div class="lb-label" id="lbLabel"></div>
+  </div>
+  <button class="lb-arrow lb-next" id="lbNext" aria-label="Next image">&#8594;</button>
+  <div class="lb-dots" id="lbDots"></div>
+  <div class="lb-counter"><span id="lbCurr">1</span> / <span id="lbTotal">1</span></div>
+</div>
 
 <!-- NAV -->
 <nav id="nav">
@@ -384,27 +532,27 @@ footer{background:var(--ink);padding:56px 0 28px}
       <h2 class="h2">Events We've <span>Brought to Life</span></h2>
     </div>
     <div class="gallery-grid reveal" style="transition-delay:.1s">
-      <div class="g-item tall"><img src="https://i.ibb.co/5W6vLmHL/IMG-20250727-WA0047.jpg" alt="Event" loading="lazy"/><div class="g-over"><span class="g-label">Live Events</span></div></div>
-      <div class="g-item"><img src="https://i.ibb.co/ynmYD1WB/IMG-20250727-WA0045.jpg" alt="Event" loading="lazy"/><div class="g-over"><span class="g-label">Stage Production</span></div></div>
-      <div class="g-item"><img src="https://i.ibb.co/Kc8w37WJ/Whats-App-Image-2025-07-27-at-21-09-22-c6fe0a0f.jpg" alt="Event" loading="lazy"/><div class="g-over"><span class="g-label">Corporate Events</span></div></div>
-      <div class="g-item tall"><img src="https://i.ibb.co/j9fYWM26/IMG-20250727-WA0043.jpg" alt="Event" loading="lazy"/><div class="g-over"><span class="g-label">Award Shows</span></div></div>
-      <div class="g-item wide"><img src="https://i.ibb.co/fYCVV1d2/Whats-App-Image-2025-07-27-at-21-05-46-1a56d5fe.jpg" alt="Event" loading="lazy"/><div class="g-over"><span class="g-label">Brand Activations</span></div></div>
-      <div class="g-item"><img src="https://i.ibb.co/k2RFMDgJ/IMG-20250722-WA0076.jpg" alt="Event" loading="lazy"/><div class="g-over"><span class="g-label">Event Production</span></div></div>
-      <div class="g-item"><img src="https://i.ibb.co/PZbs6CSv/IMG-20250722-WA0077.jpg" alt="Event" loading="lazy"/><div class="g-over"><span class="g-label">Stage Setup</span></div></div>
-      <div class="g-item big"><img src="https://i.ibb.co/6RhZnxJ5/IMG-20250722-WA0084.jpg" alt="Event" loading="lazy"/><div class="g-over"><span class="g-label">College Events</span></div></div>
-      <div class="g-item"><img src="https://i.ibb.co/zVnxBN7B/IMG-20250803-WA0006.jpg" alt="Event" loading="lazy"/><div class="g-over"><span class="g-label">Celebrations</span></div></div>
-      <div class="g-item tall"><img src="https://i.ibb.co/VcczzmSB/IMG-20250803-WA0009.jpg" alt="Event" loading="lazy"/><div class="g-over"><span class="g-label">Award Functions</span></div></div>
-      <div class="g-item"><img src="https://i.ibb.co/TZ0hvDH/IMG-20250803-WA0026.jpg" alt="Event" loading="lazy"/><div class="g-over"><span class="g-label">Product Launches</span></div></div>
-      <div class="g-item wide"><img src="https://i.ibb.co/tTswHXx9/IMG-20250803-WA0035.jpg" alt="Event" loading="lazy"/><div class="g-over"><span class="g-label">Corporate Conferences</span></div></div>
-      <div class="g-item"><img src="https://i.ibb.co/qMtVJW2z/IMG-20250803-WA0044.jpg" alt="Event" loading="lazy"/><div class="g-over"><span class="g-label">Gala Events</span></div></div>
-      <div class="g-item wide"><img src="https://i.ibb.co/Sw60kmZy/IMG-20250813-WA0031.jpg" alt="Event" loading="lazy"/><div class="g-over"><span class="g-label">Media Coverage</span></div></div>
-      <div class="g-item"><img src="https://i.ibb.co/GvXc12mT/IMG-20250813-WA0017.jpg" alt="Event" loading="lazy"/><div class="g-over"><span class="g-label">Event Highlights</span></div></div>
-      <div class="g-item big"><img src="https://i.ibb.co/dYdBNC9/Whats-App-Image-2026-02-20-at-5-40-41-PM-1.jpg" alt="Event" loading="lazy"/><div class="g-over"><span class="g-label">Grand Productions</span></div></div>
-      <div class="g-item"><img src="https://i.ibb.co/mrypts3d/Whats-App-Image-2026-03-25-at-3-04-37-PM.jpg" alt="Event" loading="lazy"/><div class="g-over"><span class="g-label">Stage Decor</span></div></div>
-      <div class="g-item tall"><img src="https://i.ibb.co/BHJVYbHQ/Whats-App-Image-2026-03-25-at-3-04-38-PM.jpg" alt="Event" loading="lazy"/><div class="g-over"><span class="g-label">Live Shows</span></div></div>
-      <div class="g-item"><img src="https://i.ibb.co/qMZLkFCc/IMG-20250729-WA0008.jpg" alt="Event" loading="lazy"/><div class="g-over"><span class="g-label">Outdoor Events</span></div></div>
-      <div class="g-item wide"><img src="https://i.ibb.co/kgj8nhLd/Branding-8.jpg" alt="Event" loading="lazy"/><div class="g-over"><span class="g-label">Branding &amp; Promotions</span></div></div>
-      <div class="g-item"><img src="https://i.ibb.co/mrFhZHmQ/Blue-White-and-Orange-Dynamic-Event-Stage-Production-Presentation.jpg" alt="Event" loading="lazy"/><div class="g-over"><span class="g-label">Event Presentations</span></div></div>
+      <div class="g-item tall" data-label="Live Events"><img src="https://i.ibb.co/5W6vLmHL/IMG-20250727-WA0047.jpg" alt="Live Events" loading="lazy"/><div class="g-over"><span class="g-label">Live Events</span></div></div>
+      <div class="g-item" data-label="Stage Production"><img src="https://i.ibb.co/ynmYD1WB/IMG-20250727-WA0045.jpg" alt="Stage Production" loading="lazy"/><div class="g-over"><span class="g-label">Stage Production</span></div></div>
+      <div class="g-item" data-label="Corporate Events"><img src="https://i.ibb.co/Kc8w37WJ/Whats-App-Image-2025-07-27-at-21-09-22-c6fe0a0f.jpg" alt="Corporate Events" loading="lazy"/><div class="g-over"><span class="g-label">Corporate Events</span></div></div>
+      <div class="g-item tall" data-label="Award Shows"><img src="https://i.ibb.co/j9fYWM26/IMG-20250727-WA0043.jpg" alt="Award Shows" loading="lazy"/><div class="g-over"><span class="g-label">Award Shows</span></div></div>
+      <div class="g-item wide" data-label="Brand Activations"><img src="https://i.ibb.co/fYCVV1d2/Whats-App-Image-2025-07-27-at-21-05-46-1a56d5fe.jpg" alt="Brand Activations" loading="lazy"/><div class="g-over"><span class="g-label">Brand Activations</span></div></div>
+      <div class="g-item" data-label="Event Production"><img src="https://i.ibb.co/k2RFMDgJ/IMG-20250722-WA0076.jpg" alt="Event Production" loading="lazy"/><div class="g-over"><span class="g-label">Event Production</span></div></div>
+      <div class="g-item" data-label="Stage Setup"><img src="https://i.ibb.co/PZbs6CSv/IMG-20250722-WA0077.jpg" alt="Stage Setup" loading="lazy"/><div class="g-over"><span class="g-label">Stage Setup</span></div></div>
+      <div class="g-item big" data-label="College Events"><img src="https://i.ibb.co/6RhZnxJ5/IMG-20250722-WA0084.jpg" alt="College Events" loading="lazy"/><div class="g-over"><span class="g-label">College Events</span></div></div>
+      <div class="g-item" data-label="Celebrations"><img src="https://i.ibb.co/zVnxBN7B/IMG-20250803-WA0006.jpg" alt="Celebrations" loading="lazy"/><div class="g-over"><span class="g-label">Celebrations</span></div></div>
+      <div class="g-item tall" data-label="Award Functions"><img src="https://i.ibb.co/VcczzmSB/IMG-20250803-WA0009.jpg" alt="Award Functions" loading="lazy"/><div class="g-over"><span class="g-label">Award Functions</span></div></div>
+      <div class="g-item" data-label="Product Launches"><img src="https://i.ibb.co/TZ0hvDH/IMG-20250803-WA0026.jpg" alt="Product Launches" loading="lazy"/><div class="g-over"><span class="g-label">Product Launches</span></div></div>
+      <div class="g-item wide" data-label="Corporate Conferences"><img src="https://i.ibb.co/tTswHXx9/IMG-20250803-WA0035.jpg" alt="Corporate Conferences" loading="lazy"/><div class="g-over"><span class="g-label">Corporate Conferences</span></div></div>
+      <div class="g-item" data-label="Gala Events"><img src="https://i.ibb.co/qMtVJW2z/IMG-20250803-WA0044.jpg" alt="Gala Events" loading="lazy"/><div class="g-over"><span class="g-label">Gala Events</span></div></div>
+      <div class="g-item wide" data-label="Media Coverage"><img src="https://i.ibb.co/Sw60kmZy/IMG-20250813-WA0031.jpg" alt="Media Coverage" loading="lazy"/><div class="g-over"><span class="g-label">Media Coverage</span></div></div>
+      <div class="g-item" data-label="Event Highlights"><img src="https://i.ibb.co/GvXc12mT/IMG-20250813-WA0017.jpg" alt="Event Highlights" loading="lazy"/><div class="g-over"><span class="g-label">Event Highlights</span></div></div>
+      <div class="g-item big" data-label="Grand Productions"><img src="https://i.ibb.co/dYdBNC9/Whats-App-Image-2026-02-20-at-5-40-41-PM-1.jpg" alt="Grand Productions" loading="lazy"/><div class="g-over"><span class="g-label">Grand Productions</span></div></div>
+      <div class="g-item" data-label="Stage Decor"><img src="https://i.ibb.co/mrypts3d/Whats-App-Image-2026-03-25-at-3-04-37-PM.jpg" alt="Stage Decor" loading="lazy"/><div class="g-over"><span class="g-label">Stage Decor</span></div></div>
+      <div class="g-item tall" data-label="Live Shows"><img src="https://i.ibb.co/BHJVYbHQ/Whats-App-Image-2026-03-25-at-3-04-38-PM.jpg" alt="Live Shows" loading="lazy"/><div class="g-over"><span class="g-label">Live Shows</span></div></div>
+      <div class="g-item" data-label="Outdoor Events"><img src="https://i.ibb.co/qMZLkFCc/IMG-20250729-WA0008.jpg" alt="Outdoor Events" loading="lazy"/><div class="g-over"><span class="g-label">Outdoor Events</span></div></div>
+      <div class="g-item wide" data-label="Branding & Promotions"><img src="https://i.ibb.co/kgj8nhLd/Branding-8.jpg" alt="Branding & Promotions" loading="lazy"/><div class="g-over"><span class="g-label">Branding &amp; Promotions</span></div></div>
+      <div class="g-item" data-label="Event Presentations"><img src="https://i.ibb.co/mrFhZHmQ/Blue-White-and-Orange-Dynamic-Event-Stage-Production-Presentation.jpg" alt="Event Presentations" loading="lazy"/><div class="g-over"><span class="g-label">Event Presentations</span></div></div>
     </div>
   </div>
 </section>
@@ -529,7 +677,108 @@ const sb = createClient(
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZhemR0eWp0YXJoaHlwZnRtbXFnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ5NDM1MDcsImV4cCI6MjA5MDUxOTUwN30.UPen7Oa8mBoxlsw29K5_Qdgex22WxKVU1k4VKSkckt0'
 );
 
-/* Custom cursor */
+/* ── LIGHTBOX ── */
+(function(){
+  var lb        = document.getElementById('lightbox');
+  var lbImg     = document.getElementById('lbImg');
+  var lbLabel   = document.getElementById('lbLabel');
+  var lbClose   = document.getElementById('lbClose');
+  var lbPrev    = document.getElementById('lbPrev');
+  var lbNext    = document.getElementById('lbNext');
+  var lbDots    = document.getElementById('lbDots');
+  var lbCurr    = document.getElementById('lbCurr');
+  var lbTotal   = document.getElementById('lbTotal');
+  var lbImgWrap = document.getElementById('lbImgWrap');
+
+  var items = Array.from(document.querySelectorAll('.g-item'));
+  var current = 0;
+  var touchStartX = 0;
+
+  // Build data array
+  var data = items.map(function(el){
+    return {
+      src:   el.querySelector('img').src,
+      label: el.dataset.label || ''
+    };
+  });
+
+  lbTotal.textContent = data.length;
+
+  // Build dots
+  data.forEach(function(_,i){
+    var d = document.createElement('div');
+    d.className = 'lb-dot';
+    d.addEventListener('click', function(){ show(i); });
+    lbDots.appendChild(d);
+  });
+
+  function updateDots(){
+    document.querySelectorAll('.lb-dot').forEach(function(d,i){
+      d.classList.toggle('active', i === current);
+    });
+  }
+
+  function show(idx){
+    current = (idx + data.length) % data.length;
+    // animate out → swap → animate in
+    lbImgWrap.style.opacity = '0';
+    lbImgWrap.style.transform = 'scale(.93)';
+    setTimeout(function(){
+      lbImg.src = data[current].src;
+      lbLabel.textContent = data[current].label;
+      lbCurr.textContent = current + 1;
+      lbImgWrap.style.opacity = '1';
+      lbImgWrap.style.transform = 'scale(1)';
+      updateDots();
+    }, 180);
+  }
+
+  function open(idx){
+    show(idx);
+    lb.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function close(){
+    lb.classList.remove('active');
+    document.body.style.overflow = '';
+    setTimeout(function(){ lbImg.src = ''; }, 400);
+  }
+
+  // Click on gallery items
+  items.forEach(function(el, i){
+    el.addEventListener('click', function(){ open(i); });
+  });
+
+  lbClose.addEventListener('click', close);
+  lbPrev.addEventListener('click', function(){ show(current - 1); });
+  lbNext.addEventListener('click', function(){ show(current + 1); });
+
+  // Click backdrop to close
+  lb.addEventListener('click', function(e){
+    if(e.target === lb) close();
+  });
+
+  // Keyboard
+  document.addEventListener('keydown', function(e){
+    if(!lb.classList.contains('active')) return;
+    if(e.key === 'Escape')       close();
+    if(e.key === 'ArrowLeft')    show(current - 1);
+    if(e.key === 'ArrowRight')   show(current + 1);
+  });
+
+  // Touch swipe
+  lb.addEventListener('touchstart', function(e){ touchStartX = e.touches[0].clientX; }, {passive:true});
+  lb.addEventListener('touchend', function(e){
+    var diff = touchStartX - e.changedTouches[0].clientX;
+    if(Math.abs(diff) > 50){ diff > 0 ? show(current+1) : show(current-1); }
+  });
+
+  // Transition style for swap animation
+  lbImgWrap.style.transition = 'opacity .18s ease, transform .18s ease';
+})();
+
+/* ── CURSOR ── */
 var dot=document.getElementById('curDot'),ring=document.getElementById('curRing');
 var mx=0,my=0,rx=0,ry=0;
 document.addEventListener('mousemove',function(e){mx=e.clientX;my=e.clientY;dot.style.left=mx+'px';dot.style.top=my+'px';});
@@ -539,21 +788,21 @@ document.querySelectorAll('a,button,.svc-card,.hl-card,.g-item').forEach(functio
   el.addEventListener('mouseleave',function(){ring.style.width='30px';ring.style.height='30px';ring.style.opacity='.45';});
 });
 
-/* Nav shadow */
+/* ── NAV shadow ── */
 window.addEventListener('scroll',function(){document.getElementById('nav').classList.toggle('solid',scrollY>20);});
 
-/* Scroll reveal */
+/* ── Scroll reveal ── */
 var obs=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');obs.unobserve(e.target);}});},{threshold:.1});
 document.querySelectorAll('.reveal').forEach(function(el){obs.observe(el);});
 
-/* Counters */
+/* ── Counters ── */
 function countUp(el,n){var c=0,s=Math.ceil(n/60);var t=setInterval(function(){c+=s;if(c>=n){el.textContent=n;clearInterval(t);}else{el.textContent=c;}},20);}
 setTimeout(function(){countUp(document.getElementById('cnt1'),70);countUp(document.getElementById('cnt2'),50);countUp(document.getElementById('cnt3'),5);},700);
 
-/* Toast */
+/* ── Toast ── */
 function toast(msg,err){var t=document.getElementById('toast');t.textContent=msg;t.style.background=err?'#b33':'#C49A1A';t.style.color='#fff';t.classList.add('show');setTimeout(function(){t.classList.remove('show');},4500);}
 
-/* Mobile nav */
+/* ── Mobile nav ── */
 var open=false;
 window.toggleNav=function(){
   open=!open;
@@ -570,7 +819,7 @@ window.toggleNav=function(){
 };
 document.querySelectorAll('#navLinks a').forEach(function(a){a.addEventListener('click',function(){if(open)window.toggleNav();});});
 
-/* Form → Supabase */
+/* ── Form → Supabase ── */
 window.sendForm=async function(){
   var name=document.getElementById('fn').value.trim(),
       phone=document.getElementById('fp').value.trim(),
